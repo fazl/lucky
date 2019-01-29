@@ -30,6 +30,7 @@ public class Game {
         Random random = new Random();
         int treasureColumn = random.nextInt(10);
         int treasureRow = random.nextInt(10);
+        System.out.printf("Treasure location:%d,%d(row,col)\n", treasureRow, treasureColumn);
         tiles[treasureRow][treasureColumn] = 1;
     }
 

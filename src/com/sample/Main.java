@@ -12,10 +12,8 @@ import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class Main extends Application {
     static boolean isMuted;
@@ -23,7 +21,7 @@ public class Main extends Application {
     static MediaPlayer mediaPlayerBGM;
     static MediaPlayer mediaPlayerSFX;
     private static HashMap<String, Media> sounds;
-    private static ArrayList<Long> usage;
+    private static ArrayList<Double> usage;
     private final String[] SOUND_LIST = {"bgm_credits.mp3", "bgm_game.mp3", "bgm_game_1.mp3", "bgm_game_2.mp3", "bgm_game_3.mp3",
             "bgm_how_to.mp3", "bgm_menu.mp3", "bgm_victory.mp3", "sfx_button_clicked.wav",
             "sfx_card_unfold.wav", "sfx_toggle.wav"
@@ -31,11 +29,8 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
-        AtomicLong sum = new AtomicLong();
-        usage.forEach(sum::addAndGet);
-        long average = sum.get() / usage.size();
-        System.out.printf("minimum usage: %d, maximum usage: %d, average usage: %d",
-                Collections.min(usage), Collections.max(usage), average);
+        new MemoryTrack(usage);
+
     }
 
     static void playBGM(String key) {
@@ -62,6 +57,8 @@ public class Main extends Application {
         mediaPlayerSFX = new MediaPlayer(sounds.get(key));
         if (isMuted) {
             mediaPlayerSFX.setVolume(0.0);
+        }else {
+            mediaPlayerSFX.setVolume(0.25);
         }
         mediaPlayerSFX.play();
     }
@@ -95,8 +92,8 @@ public class Main extends Application {
 
             while (true) {
                 try {
-                    usage.add(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory());
-                    System.out.printf("Used memory: %d\n", Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory());
+                    usage.add((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) /
+                            (1024.0 * 1024.0));
                     Thread.sleep(1000);
                 } catch (InterruptedException ex) {
                     System.out.println("Interrupted");
