@@ -219,7 +219,7 @@
       <exclude name="lucky.jar"/>
     </fx:fileset>
     <fx:fileset id="all_lucky" dir="${artifact.temp.output.lucky}" includes="**/*.jar"/>
-    <fx:application id="lucky_id" name="lucky" mainClass="com.sample.Main" version="1.03"/>
+    <fx:application id="lucky_id" name="lucky" mainClass="com.sample.Main" version="1.01"/>
     <fx:jar destfile="${artifact.temp.output.lucky}/lucky.jar">
       <fx:application refid="lucky_id"/>
       <fileset dir="${artifact.temp.output.lucky}" excludes="**/*.jar"/>
@@ -228,13 +228,13 @@
       </fx:resources>
       <manifest>
         <attribute name="Implementation-Title" value="The Lucky Pick"/>
-        <attribute name="Implementation-Version" value="1.03"/>
-        <attribute name="Implementation-Vendor" value="CeylanStudios"/>
+        <attribute name="Implementation-Version" value="1.01"/>
+        <attribute name="Implementation-Vendor" value="AltugCEYLAN"/>
       </manifest>
     </fx:jar>
-    <fx:deploy width="800" height="800" updatemode="background" outdir="${artifact.temp.output.lucky}/deploy" outfile="lucky" nativeBundles="msi">
+    <fx:deploy width="800" height="800" updatemode="background" outdir="${artifact.temp.output.lucky}/deploy" outfile="lucky" nativeBundles="all">
       <fx:application refid="lucky_id"/>
-      <fx:info title="The Lucky Pick" vendor="CeylanStudios" description="A card game.  This game was previously developed via swing but I decided to develop it using  JavaFX"/>
+      <fx:info title="The Lucky Pick" vendor="AltugCEYLAN" description="A card game.  This game was previously developed via swing but I decided to develop it using  JavaFX"/>
       <fx:resources>
         <fx:fileset refid="all_lucky"/>
       </fx:resources>
