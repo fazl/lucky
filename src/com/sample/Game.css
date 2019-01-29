@@ -1,0 +1,37 @@
+.root {
+    -fx-background-image: url("/gameBG.png");
+}
+
+.label {
+    -fx-text-fill: radial-gradient(radius 90%, #E9E7C2, #E5DA40);
+}
+
+.button {
+    -fx-text-fill: radial-gradient(radius 50%, #FF8000, #CCCC00);
+}
+
+.button-treasure {
+    -fx-background-image: url("/treasure.png");
+}
+
+.button-covered {
+    -fx-background-image: url("/cardBack.png");
+}
+
+.button-uncovered {
+    -fx-background-image: url("/uncovered.png");
+}
+
+#menu {
+    -fx-text-fill: radial-gradient(radius 100%, darkgray, #CCCC00);
+    -fx-background-radius: 6;
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(#660033, black);
+}
+
+.radio-button {
+    -fx-text-fill: radial-gradient(radius 100%, darkgray, #CCCC00);
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-background-color: linear-gradient(#660033, black);
+}

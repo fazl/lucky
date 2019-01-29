@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" prefHeight="600.0" prefWidth="600.0" stylesheets="@Style.css"
+            xmlns="http://javafx.com/javafx" fx:controller="com.sample.Controller">
+    <center>
+        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" BorderPane.alignment="CENTER">
+            <children>
+                <Button id="button-menu" fx:id="newGame" focusTraversable="false" maxHeight="50.0" maxWidth="200.0"
+                        minHeight="50.0" minWidth="200.0" mnemonicParsing="false" onAction="#newGameButtonClicked"
+                        prefHeight="50.0" prefWidth="200.0" text="New Game" textAlignment="CENTER">
+                    <font>
+                        <Font size="25.0"/>
+                    </font>
+                    <effect>
+                        <Glow/>
+                    </effect>
+                </Button>
+                <Button id="button-menu" fx:id="howTo" focusTraversable="false" maxHeight="50.0" maxWidth="200.0"
+                        minHeight="50.0" minWidth="200.0" mnemonicParsing="false" onAction="#howToPlayButtonClicked"
+                        prefHeight="50.0" prefWidth="200.0" text="How To Play" textAlignment="CENTER">
+                    <font>
+                        <Font size="25.0"/>
+                    </font>
+                    <effect>
+                        <Glow/>
+                    </effect>
+                </Button>
+                <Button id="button-menu" fx:id="credits" focusTraversable="false" maxHeight="50.0" maxWidth="200.0"
+                        minHeight="50.0" minWidth="200.0" mnemonicParsing="false" onAction="#creditsButtonClicked"
+                        prefHeight="50.0" prefWidth="200.0" text="Credits" textAlignment="CENTER">
+                    <font>
+                        <Font size="25.0"/>
+                    </font>
+                    <effect>
+                        <Glow/>
+                    </effect>
+                </Button>
+                <Button id="button-menu" fx:id="exit" focusTraversable="false" layoutX="10.0" layoutY="87.0"
+                        maxHeight="50.0" maxWidth="200.0" minHeight="50.0" minWidth="200.0" mnemonicParsing="false"
+                        onAction="#exitButtonClicked" prefHeight="50.0" prefWidth="200.0" text="Exit"
+                        textAlignment="CENTER">
+                    <font>
+                        <Font size="25.0"/>
+                    </font>
+                    <effect>
+                        <Glow/>
+                    </effect>
+                </Button>
+            </children>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+            </padding>
+        </VBox>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" BorderPane.alignment="CENTER">
+            <children>
+                <RadioButton fx:id="musicOnOff" contentDisplay="CENTER" focusTraversable="false" maxHeight="-Infinity"
+                             maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false"
+                             onAction="#musicOnOffRadioButtonChecked" prefHeight="40.0" prefWidth="100.0" text="Mute"
+                             textAlignment="CENTER">
+                    <HBox.margin>
+                        <Insets bottom="10.0" right="50.0" top="10.0"/>
+                    </HBox.margin>
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                    </padding>
+                </RadioButton>
+            </children>
+        </HBox>
+    </bottom>
+    <top>
+        <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+            <children>
+                <Label alignment="CENTER" focusTraversable="false" text="Welcome To" textAlignment="CENTER">
+                    <font>
+                        <Font name="MV Boli" size="41.0"/>
+                    </font>
+                    <textFill>
+                        <RadialGradient centerX="0.5" centerY="0.2137404580152672" radius="0.5">
+                            <stops>
+                                <Stop color="#191919"/>
+                                <Stop color="#566c41" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </textFill>
+                    <effect>
+                        <GaussianBlur radius="1.0"/>
+                    </effect>
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                    </padding>
+                </Label>
+                <Label alignment="CENTER" focusTraversable="false" layoutX="75.0" layoutY="79.0" text="The Lucky Pick"
+                       textAlignment="CENTER">
+                    <font>
+                        <Font name="MV Boli" size="58.0"/>
+                    </font>
+                    <textFill>
+                        <RadialGradient centerX="0.5" centerY="0.2137404580152672" radius="0.5">
+                            <stops>
+                                <Stop color="#191919"/>
+                                <Stop color="#9a7f41" offset="1.0"/>
+                            </stops>
+                        </RadialGradient>
+                    </textFill>
+                    <effect>
+                        <GaussianBlur radius="1.0"/>
+                    </effect>
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                    </padding>
+                </Label>
+            </children>
+        </VBox>
+    </top>
+</BorderPane>

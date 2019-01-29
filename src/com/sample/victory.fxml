@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<VBox xmlns:fx="http://javafx.com/fxml" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity"
+      minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" spacing="20.0"
+      stylesheets="@Style.css" xmlns="http://javafx.com/javafx" fx:controller="com.sample.Controller">
+    <children>
+        <Label text="Congratulations!">
+            <VBox.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            </VBox.margin>
+            <font>
+                <Font size="74.0"/>
+            </font>
+        </Label>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+            <children>
+                <Label text="Time Spent:">
+                    <font>
+                        <Font size="54.0"/>
+                    </font>
+                </Label>
+                <Label fx:id="time" layoutX="10.0" layoutY="10.0" prefHeight="54.0" prefWidth="200.0">
+                    <font>
+                        <Font size="54.0"/>
+                    </font>
+                </Label>
+            </children>
+            <VBox.margin>
+                <Insets/>
+            </VBox.margin>
+        </HBox>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+            <children>
+                <Label text="Tries:">
+                    <font>
+                        <Font size="54.0"/>
+                    </font>
+                </Label>
+                <Label fx:id="tries" layoutX="10.0" layoutY="10.0" prefHeight="54.0" prefWidth="200.0">
+                    <font>
+                        <Font size="54.0"/>
+                    </font>
+                </Label>
+            </children>
+        </HBox>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+            <children>
+                <Label text="Score:">
+                    <font>
+                        <Font size="56.0"/>
+                    </font>
+                </Label>
+                <Label fx:id="score" layoutX="10.0" layoutY="10.0" prefHeight="54.0" prefWidth="200.0">
+                    <font>
+                        <Font size="56.0"/>
+                    </font>
+                </Label>
+            </children>
+        </HBox>
+        <Button fx:id="menu" focusTraversable="false" maxHeight="50.0" maxWidth="200.0" minHeight="50.0"
+                minWidth="200.0" mnemonicParsing="false" onAction="#menuButtonClicked" prefHeight="50.0"
+                prefWidth="200.0" text="Menu" textAlignment="CENTER">
+            <font>
+                <Font size="25.0"/>
+            </font>
+            <effect>
+                <Glow/>
+            </effect>
+        </Button>
+    </children>
+    <opaqueInsets>
+        <Insets/>
+    </opaqueInsets>
+    <padding>
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+    </padding>
+</VBox>
