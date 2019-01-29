@@ -10,7 +10,7 @@
         <option name="nativeBundle" value="msi" />
         <option name="title" value="The Lucky Pick" />
         <option name="vendor" value="CeylanStudios" />
-        <option name="version" value="1.02" />
+        <option name="version" value="1.03" />
         <option name="width" value="800" />
       </options>
     </properties>
