@@ -18,7 +18,7 @@ import java.io.IOException;
 
 public class Controller {
     @FXML
-    public RadioButton musicOnOff;
+    public RadioButton mute;
     @FXML
     public Button newGame;
     @FXML
@@ -37,34 +37,53 @@ public class Controller {
     public Label time;
     @FXML
     public Label tries;
+
     private boolean animating;
 
+    //Looks like many instances of Controller are created
+    //In particular whenever a new game starts..
+    //
+    private static int instances = 0;
+    private final int id;
+
+    public Controller(){
+        id = ++instances;
+        System.out.printf("Controller object nr %d created\n", id );
+    }
+
+    // warning: mute can be null when this method called during load victory scene
+    // some fxml voodoo at work, intellij doesn't think anyone calls this method
     public void initialize() {
         if (score != null && time != null && tries != null) {
+            System.out.println("Controller: Binding properties..");
             score.textProperty().bind(Game.scoreProperty);
             time.textProperty().bind(Game.timeProperty);
             tries.textProperty().bind(Game.triesProperty);
             animating = false;
+        }else{
+            System.out.println("Controller: NOT binding properties..");
+            System.out.printf(
+                "score != null : %b,  time != null : %b, tries != null : %b\n",
+                score != null, time != null, tries != null
+            );
         }
-        if (musicOnOff != null) {
-            if (Main.isMuted) {
-                musicOnOff.setSelected(true);
-            }
+        if(mute != null) {
+            mute.setSelected(Main.isMuted);
         }
     }
 
     public void newGameButtonClicked() {
         try {
             Main.playSFX("sfx_button_clicked");
-            new Game();
+            Game.resetGame();
             Main.window.hide();
             Main.window.setScene(getScene("game"));
             Main.window.setTitle("The Main Pick");
-            Main.window.setMaximized(true);
+            Main.window.setMaximized(false);
             Main.playBGM("bgm_game");
             Main.window.show();
         } catch (IOException e) {
-            System.out.println("could not change the scene to: game");
+            System.err.println("could not change the scene to: game");
         }
     }
 
@@ -74,7 +93,7 @@ public class Controller {
             Main.playBGM("bgm_menu");
             if (Main.window.getTitle().equals("The Main Pick")) {
                 Main.window.hide();
-                Game.setGameOver();
+                Game.setGameIsOver();
                 Main.window.setScene(getScene("menu"));
                 Main.window.setMaximized(false);
                 Main.window.show();
@@ -83,13 +102,14 @@ public class Controller {
             }
             Main.window.setTitle("Main Menu");
         } catch (IOException e) {
-            System.out.println("could not change the scene to: game");
+            System.err.println("could not change the scene to: game");
         }
     }
 
     public void gameButtonClicked(ActionEvent event) {
         ObservableList<Node> buttons = pane.getChildren();
-        int index = buttons.indexOf(event.getSource());
+        Object src = event.getSource();
+        int index = buttons.indexOf(src);
         int column = index % 10;
         int row = (index - index % 10) / 10;
         if (!((Button) event.getSource()).getStyleClass().toString().equals("button button-treasure") &&
@@ -140,7 +160,7 @@ public class Controller {
             Main.window.setScene(getScene("howTo"));
             Main.window.setTitle("How to Play");
         } catch (IOException e) {
-            System.out.println("could not change the scene to: how to play");
+            System.err.println("could not change the scene to: how to play");
         }
     }
 
@@ -151,7 +171,7 @@ public class Controller {
             Main.window.setScene(getScene("credits"));
             Main.window.setTitle("Credits");
         } catch (IOException e) {
-            System.out.println("could not change the scene to: credits");
+            System.err.println("could not change the scene to: credits");
         }
     }
 
@@ -160,22 +180,23 @@ public class Controller {
         Main.window.close();
     }
 
-    public void musicOnOffRadioButtonChecked() {
+    public void muteRadioButtonChecked() {
         Main.playSFX("sfx_toggle");
-        if (musicOnOff.isSelected()) {
+        if (mute.isSelected()) {
             Main.isMuted = true;
             Main.mediaPlayerBGM.setVolume(0.0);
             Main.mediaPlayerSFX.setVolume(0.0);
-            System.out.println("now selected");
+            System.out.println("mute selected");
         } else {
             Main.isMuted = false;
             Main.mediaPlayerBGM.setVolume(1.0);
             Main.mediaPlayerSFX.setVolume(1.0);
-            System.out.println("unselected");
+            System.out.println("mute cleared");
         }
     }
 
     private void loadVictoryScene() {
+        System.out.println("Loading victory scene\n");
         try {
             Main.window.hide();
             Main.playBGM("bgm_victory");
@@ -184,7 +205,7 @@ public class Controller {
             Main.window.setMaximized(false);
             Main.window.show();
         } catch (IOException e) {
-            System.out.println("could not change the scene to: victory");
+            System.err.println("could not change the scene to: victory");
         }
     }
 

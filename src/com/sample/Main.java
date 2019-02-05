@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class Main extends Application {
-    private static Random random = new Random();
+    static Random random = new Random(); //used elsewhere
     private static final double ONE_MEGA_BYTE = 1024 * 1024;
     static boolean isMuted;
     static Stage window;
@@ -24,9 +24,9 @@ public class Main extends Application {
     static MediaPlayer mediaPlayerSFX;
     private static HashMap<String, Media> sounds = new HashMap<>();
     private static ArrayList<Double> usage = new ArrayList<>();
-    private final String[] SOUND_LIST = {"bgm_credits.mp3", "bgm_game.mp3", "bgm_game_1.mp3", "bgm_game_2.mp3", "bgm_game_3.mp3",
-            "bgm_how_to.mp3", "bgm_menu.mp3", "bgm_victory.mp3", "sfx_button_clicked.wav",
-            "sfx_card_unfold.wav", "sfx_toggle.wav"
+    private final String[] SOUND_LIST = {
+        "bgm_credits.mp3", "bgm_game.mp3", "bgm_game_1.mp3", "bgm_game_2.mp3", "bgm_game_3.mp3", "bgm_how_to.mp3",
+        "bgm_menu.mp3", "bgm_victory.mp3", "sfx_button_clicked.wav", "sfx_card_unfold.wav", "sfx_toggle.wav"
     };
 
     public static void main(String[] args) {
@@ -88,7 +88,7 @@ public class Main extends Application {
         // long running operation runs on different thread
         Thread scoreThread = new Thread(() -> {
             Runnable updater = () -> {
-                if (!Game.isGameIsOver() && Game.getScore() != 0 && window.getTitle().equals("The Main Pick") &&
+                if (!Game.getGameIsOver() && Game.getScore() != 0 && window.getTitle().equals("The Main Pick") &&
                         Game.firstClickHappened()) {
                     Game.scoreCalculator();
                 }
