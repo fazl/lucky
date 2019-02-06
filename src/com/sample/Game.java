@@ -5,7 +5,10 @@ import javafx.beans.property.StringProperty;
 
 import java.util.Arrays;
 
+enum ActiveScene { MENU, GAME, VICTORY }
+
 public class Game {
+    static ActiveScene activeScene = ActiveScene.MENU;  //starts correct
     static StringProperty scoreProperty;
     static StringProperty timeProperty;
     static StringProperty triesProperty;
