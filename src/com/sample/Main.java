@@ -11,9 +11,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 public class Main extends Application {
     private static int instances = 0;
@@ -24,12 +22,31 @@ public class Main extends Application {
     static MediaPlayer mediaPlayerBGM;
     static MediaPlayer mediaPlayerSFX;
     private static HashMap<String, Media> sounds = new HashMap<>();
-    static ArrayList<Double> usage = new ArrayList<>();
+    private static ArrayList<Double> usage = new ArrayList<>();
     private final static String[] SOUND_LIST = {
         "bgm_credits.mp3", "bgm_game.mp3", "bgm_game_1.mp3", "bgm_game_2.mp3", "bgm_game_3.mp3", "bgm_how_to.mp3",
         "bgm_menu.mp3", "bgm_victory.mp3", "sfx_button_clicked.wav", "sfx_card_unfold.wav", "sfx_toggle.wav"
     };
     private static final String[] SUFFICES = {"", "_1", "_2", "_3"};
+    private static final double ONE_MEGA_BYTE = 1024 * 1024;
+
+    // Timer is simpler to use than a custom thread class
+    // Thanks to https://stackoverflow.com/a/53904485
+    //
+    private static Timer timer = new Timer();
+    private static TimerTask updateScore = new TimerTask(){
+        public void run(){
+            Runtime r = Runtime.getRuntime();
+            double mbUsed = (r.totalMemory() - r.freeMemory()) /ONE_MEGA_BYTE;
+            System.err.printf("MB used = %f.\n", mbUsed);
+            Main.usage.add(mbUsed);
+
+            // UI update is run on the Application thread
+            Platform.runLater( () -> {
+                if (Main.window.getTitle().equals("The Main Pick")) { Game.scoreCalculator(); }
+            });
+        }
+    };
 
     // testing shows only one instance is created
     //
@@ -89,9 +106,7 @@ public class Main extends Application {
         window.show();
 
         // update score at intervals on a background thread
-        Thread scoreThread = new ScoreThread();
-        scoreThread.setDaemon(true);  //so won't prevent shutdown
-        scoreThread.start();
+        timer.scheduleAtFixedRate(updateScore, 1000, 1000); //task, delay, period
     }
 
     private void loadSounds() {
