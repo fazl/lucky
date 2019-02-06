@@ -19,13 +19,12 @@ public class Main extends Application {
     private static int instances = 0;
     private final int id;
     static Random random = new Random(); //used elsewhere
-    private static final double ONE_MEGA_BYTE = 1024 * 1024;
     static boolean isMuted;
     static Stage window;
     static MediaPlayer mediaPlayerBGM;
     static MediaPlayer mediaPlayerSFX;
     private static HashMap<String, Media> sounds = new HashMap<>();
-    private static ArrayList<Double> usage = new ArrayList<>();
+    static ArrayList<Double> usage = new ArrayList<>();
     private final static String[] SOUND_LIST = {
         "bgm_credits.mp3", "bgm_game.mp3", "bgm_game_1.mp3", "bgm_game_2.mp3", "bgm_game_3.mp3", "bgm_how_to.mp3",
         "bgm_menu.mp3", "bgm_victory.mp3", "sfx_button_clicked.wav", "sfx_card_unfold.wav", "sfx_toggle.wav"
@@ -41,8 +40,7 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
-        new MemoryTrack(usage);
-
+//        new MemoryTrack(usage);
     }
 
     static void playBGM(String key) {
@@ -80,42 +78,20 @@ public class Main extends Application {
     //
     @Override
     public void start(Stage primaryStage) throws Exception {
+        window = primaryStage;
         isMuted = false;
         loadSounds();
         playBGM("bgm_menu");
-        window = primaryStage;
         Parent rootMenu = FXMLLoader.load(getClass().getResource("menu.fxml"));
-        // long running operation runs on different thread
-        Thread scoreThread = new Thread(() -> {
-            Runnable updater = () -> {
-                if (!Game.getGameIsOver() && Game.getScore() != 0 && window.getTitle().equals("The Main Pick") &&
-                        Game.firstClickHappened()) {
-                    Game.scoreCalculator();
-                }
-            };
-
-            while (true) {
-                try {
-                    Runtime r = Runtime.getRuntime();
-                    double mbUsed = (r.totalMemory() - r.freeMemory()) /ONE_MEGA_BYTE;
-                    System.err.printf("MB used = %f.\n", mbUsed);
-                    usage.add(mbUsed);
-                    Thread.sleep(1000);
-                } catch (InterruptedException ex) {
-                    System.out.println("Interrupted");
-                }
-
-                // UI update is run on the Application thread
-                Platform.runLater(updater);
-            }
-        });
-        // don't let thread prevent JVM shutdown
-        scoreThread.setDaemon(true);
-        scoreThread.start();
         window.setTitle("Main Menu");
         window.setScene(new Scene(rootMenu, 600, 600));
         window.setResizable(false);
         window.show();
+
+        // update score at intervals on a background thread
+        Thread scoreThread = new ScoreThread();
+        scoreThread.setDaemon(true);  //so won't prevent shutdown
+        scoreThread.start();
     }
 
     private void loadSounds() {
