@@ -99,10 +99,12 @@ public class Main extends Application {
         isMuted = false;
         loadSounds();
         playBGM("bgm_menu");
+        Game.activeScene = ActiveScene.MENU;
         Parent rootMenu = FXMLLoader.load(getClass().getResource("menu.fxml"));
-        window.setTitle("Main Menu");
+        window.hide();
         window.setScene(new Scene(rootMenu, 600, 600));
-        window.setResizable(false);
+        window.setTitle("Main Menu");
+        window.setMaximized(false);
         window.show();
 
         // update score at intervals on a background thread

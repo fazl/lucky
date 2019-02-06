@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,13 +16,24 @@ import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /* Class Controller is listed as the fx:controller attribute in the fxml GUI layout files.
    This means it holds the methods that listen to GUI events..
  */
 
-public class Controller {
+public class Controller implements Initializable {
     private static final Duration TRANSITION_LEN = new Duration(150);
+
+    // Following fxml fields will be missing/null unless the scene loaded
+    // by FXMLLoader contains the respective widgets.
+    // So when menu scene is loaded, only the buttons for new game, howto, credits are available
+    // If the newgame button is pressed, then the game scene will load and a new controller object
+    // will be created during the FXMLLoader processing.  This time it will only inject the
+    // fields on the main game i.e. score, time,  tries, but not the newGame, howTo etc buttons
+    // Hence it is necessary to check before using these fields.
+
     @FXML
     public RadioButton mute;
     @FXML
@@ -54,30 +66,21 @@ public class Controller {
     //Called via reflection in FXMLLoader during loading of initial scene for primary stage!
     //(Via digging in debugger)
     //
-    public Controller(){
+    public Controller() {
         id = ++instances;
         System.out.printf("%s object #%d created\n", this.getClass().getSimpleName(), id);
-        System.out.printf("score: %s; time: %s; tries: %s;\n", score, time, tries);
     }
 
-    // warning: mute can be null when this method called during load victory scene
-    // some fxml voodoo at work, intellij doesn't think anyone calls this method
-    public void initialize() {
-        if (score != null && time != null && tries != null) {
-            System.out.printf("Controller #%d: Binding properties..\n", id);
-            score.textProperty().bind(Game.scoreProperty);
-            time.textProperty().bind(Game.timeProperty);
-            tries.textProperty().bind(Game.triesProperty);
-            animating = false;
-        }else{
-            System.out.printf("Controller #%d: NOT binding properties..\n", id);
-            System.out.printf(
-                "score != null : %b,  time != null : %b, tries != null : %b\n",
-                score != null, time != null, tries != null
-            );
-        }
-        if(mute != null) {
-            mute.setSelected(Main.isMuted);
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {  //the correct override..
+        animating = false;
+        switch( Game.activeScene){
+            case GAME:
+                score.textProperty().bind(Game.scoreProperty);
+                time.textProperty().bind(Game.timeProperty);
+                tries.textProperty().bind(Game.triesProperty);
+            case MENU: // mute is on both GAME and MENU screens
+                mute.setSelected(Main.isMuted);
         }
     }
 
@@ -85,6 +88,7 @@ public class Controller {
         try {
             Main.playSFX("sfx_button_clicked");
             Game.resetGame();
+            Game.activeScene = ActiveScene.GAME;
             Main.window.hide();
             Main.window.setScene(getScene("game"));
             Main.window.setTitle("The Main Pick");
@@ -100,6 +104,7 @@ public class Controller {
         try {
             Main.playSFX("sfx_button_clicked");
             Main.playBGM("bgm_menu");
+            Game.activeScene = ActiveScene.MENU;
             if (Main.window.getTitle().equals("The Main Pick")) {
                 Main.window.hide();
                 Game.setGameIsOver();
@@ -210,6 +215,7 @@ public class Controller {
         try {
             Main.window.hide();
             Main.playBGM("bgm_victory");
+            Game.activeScene = ActiveScene.VICTORY;
             Main.window.setScene(getScene("victory"));
             Main.window.setTitle("Victory");
             Main.window.setMaximized(false);
@@ -226,4 +232,5 @@ public class Controller {
         }
         return new Scene(root, 600, 600);
     }
+
 }
