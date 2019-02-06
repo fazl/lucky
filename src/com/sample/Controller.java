@@ -17,6 +17,7 @@ import javafx.util.Duration;
 import java.io.IOException;
 
 public class Controller {
+    private static final Duration TRANSITION_LEN = new Duration(200);
     @FXML
     public RadioButton mute;
     @FXML
@@ -48,7 +49,7 @@ public class Controller {
 
     public Controller(){
         id = ++instances;
-        System.out.printf("Controller object nr %d created\n", id );
+        System.out.printf("%s object #%d created\n", this.getClass().getSimpleName(), id);
     }
 
     // warning: mute can be null when this method called during load victory scene
@@ -61,7 +62,7 @@ public class Controller {
             tries.textProperty().bind(Game.triesProperty);
             animating = false;
         }else{
-            System.out.println("Controller: NOT binding properties..");
+            System.out.println("Controller: NOT binding properties, because..");
             System.out.printf(
                 "score != null : %b,  time != null : %b, tries != null : %b\n",
                 score != null, time != null, tries != null
@@ -117,7 +118,7 @@ public class Controller {
 
             FadeTransition transition = new FadeTransition();
             transition.setNode((Button) event.getSource());
-            transition.setDuration(new Duration(500));
+            transition.setDuration(TRANSITION_LEN);
             transition.setFromValue(1.0);
             transition.setToValue(0.0);
             transition.setCycleCount(1);
@@ -142,7 +143,7 @@ public class Controller {
                     });
                 }
             });
-            System.out.println(animating);
+            System.out.printf("Animating: %b\n", animating);
             if (!animating) {
                 animating = true;
                 transition.play();
@@ -150,7 +151,7 @@ public class Controller {
             }
         }
 
-        System.out.printf("button index:%d,row:%d,column:%d\n", index, row, column);
+        System.out.printf("button:%d (row:%d,col:%d)\n", index, row, column);
     }
 
     public void howToPlayButtonClicked() {
@@ -186,12 +187,13 @@ public class Controller {
             Main.isMuted = true;
             Main.mediaPlayerBGM.setVolume(0.0);
             Main.mediaPlayerSFX.setVolume(0.0);
-            System.out.println("mute selected");
+            System.out.println("muted");
         } else {
             Main.isMuted = false;
             Main.mediaPlayerBGM.setVolume(1.0);
             Main.mediaPlayerSFX.setVolume(1.0);
-            System.out.println("mute cleared");
+
+            System.out.println("unmuted");
         }
     }
 

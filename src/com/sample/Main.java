@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class Main extends Application {
+    private static int instances = 0;
+    private final int id;
     static Random random = new Random(); //used elsewhere
     private static final double ONE_MEGA_BYTE = 1024 * 1024;
     static boolean isMuted;
@@ -28,6 +30,13 @@ public class Main extends Application {
         "bgm_credits.mp3", "bgm_game.mp3", "bgm_game_1.mp3", "bgm_game_2.mp3", "bgm_game_3.mp3", "bgm_how_to.mp3",
         "bgm_menu.mp3", "bgm_victory.mp3", "sfx_button_clicked.wav", "sfx_card_unfold.wav", "sfx_toggle.wav"
     };
+
+    // testing shows only one instance is created
+    //
+    public Main(){
+        id = ++instances;
+        System.out.printf("%s object #%d created\n", this.getClass().getSimpleName(), id);
+    }
 
     public static void main(String[] args) {
         launch(args);
@@ -50,9 +59,8 @@ public class Main extends Application {
         mediaPlayerBGM.setCycleCount(MediaPlayer.INDEFINITE);
         if (isMuted) {
             mediaPlayerBGM.setVolume(0.0);
-        }else{
-            mediaPlayerBGM.play();
         }
+        mediaPlayerBGM.play();  //play even if muted else unmute is noop
     }
 
     static void playSFX(String key) {
@@ -65,8 +73,8 @@ public class Main extends Application {
             mediaPlayerSFX.setVolume(0.0);
         }else {
             mediaPlayerSFX.setVolume(0.25);
-            mediaPlayerSFX.play();
         }
+        mediaPlayerSFX.play();  //play even if muted else unmute is noop
     }
 
     @Override
@@ -78,6 +86,8 @@ public class Main extends Application {
             if( !sounds.containsKey(key)){
                 System.out.printf("Adding sound %s -> %s\n", soundName, resource);
                 sounds.put(key, new Media(resource.toString()));
+            }else{
+                System.out.printf("Not adding sound %s (already added)\n", soundName);
             }
         }
         mediaPlayerBGM = new MediaPlayer(sounds.get("bgm_menu"));
