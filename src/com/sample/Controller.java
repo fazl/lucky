@@ -51,9 +51,13 @@ public class Controller {
     private static int instances = 0;
     private final int id;
 
+    //Called via reflection in FXMLLoader during loading of initial scene for primary stage!
+    //(Via digging in debugger)
+    //
     public Controller(){
         id = ++instances;
         System.out.printf("%s object #%d created\n", this.getClass().getSimpleName(), id);
+        System.out.printf("score: %s; time: %s; tries: %s;\n", score, time, tries);
     }
 
     // warning: mute can be null when this method called during load victory scene

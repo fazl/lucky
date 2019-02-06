@@ -109,6 +109,12 @@ public class Main extends Application {
         timer.scheduleAtFixedRate(updateScore, 1000, 1000); //task, delay, period
     }
 
+    @Override
+    public void stop() throws Exception {
+        timer.cancel();
+        super.stop();
+    }
+
     private void loadSounds() {
         for (String soundName : SOUND_LIST) {
             URL resource = getClass().getResource("/" + soundName);
