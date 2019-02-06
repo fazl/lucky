@@ -30,7 +30,7 @@ public class Game {
         for(int[] row : tiles ){ Arrays.fill(row,0); }
         int treasureColumn = Main.random.nextInt(10);
         int treasureRow = Main.random.nextInt(10);
-        System.out.printf("Treasure location:(row:%d, col:%d)\n", treasureRow, treasureColumn);
+        System.out.printf("Loot@(row:%d, col:%d)\n", treasureRow, treasureColumn);
         tiles[treasureRow][treasureColumn] = 1;
     }
 
@@ -58,6 +58,10 @@ public class Game {
     }
 
     static void scoreCalculator() {
+        boolean inPlay = !getGameIsOver() && getScore() != 0 && firstClickHappened();
+        if( !inPlay ){
+            return;
+        }
         time++;
         int tenth = time/10;
         if( tenth < 5 ) {
