@@ -15,6 +15,8 @@ public class Game {
     private static int[][] tiles = new int[10][10];
     private static boolean gameIsOver;
     private static boolean firstClick;
+    private static int instances=0;
+    private int id;
 
     static void resetGame() {
         tries = 0;
@@ -30,6 +32,13 @@ public class Game {
         int treasureRow = Main.random.nextInt(10);
         System.out.printf("Treasure location:(row:%d, col:%d)\n", treasureRow, treasureColumn);
         tiles[treasureRow][treasureColumn] = 1;
+    }
+
+    // Testing shows no instances created..
+    //
+    public Game(){
+        id = ++instances;
+        System.out.printf("%s object #%d created\n", this.getClass().getSimpleName(), id);
     }
 
     static boolean firstClickHappened() {
