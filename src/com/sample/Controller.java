@@ -109,8 +109,8 @@ public class Controller {
 
     public void gameButtonClicked(ActionEvent event) {
         ObservableList<Node> buttons = pane.getChildren();
-        Object src = event.getSource();
-        int index = buttons.indexOf(src);
+        Button button = (Button) event.getSource();
+        int index = buttons.indexOf(button);
         int column = index % 10;
         int row = (index - index % 10) / 10;
         if (!((Button) event.getSource()).getStyleClass().toString().equals("button button-treasure") &&
