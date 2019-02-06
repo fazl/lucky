@@ -16,8 +16,12 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 
+/* Class Controller is listed as the fx:controller attribute in the fxml GUI layout files.
+   This means it holds the methods that listen to GUI events..
+ */
+
 public class Controller {
-    private static final Duration TRANSITION_LEN = new Duration(200);
+    private static final Duration TRANSITION_LEN = new Duration(150);
     @FXML
     public RadioButton mute;
     @FXML
@@ -56,13 +60,13 @@ public class Controller {
     // some fxml voodoo at work, intellij doesn't think anyone calls this method
     public void initialize() {
         if (score != null && time != null && tries != null) {
-            System.out.println("Controller: Binding properties..");
+            System.out.printf("Controller #%d: Binding properties..\n", id);
             score.textProperty().bind(Game.scoreProperty);
             time.textProperty().bind(Game.timeProperty);
             tries.textProperty().bind(Game.triesProperty);
             animating = false;
         }else{
-            System.out.println("Controller: NOT binding properties, because..");
+            System.out.printf("Controller #%d: NOT binding properties..\n", id);
             System.out.printf(
                 "score != null : %b,  time != null : %b, tries != null : %b\n",
                 score != null, time != null, tries != null
