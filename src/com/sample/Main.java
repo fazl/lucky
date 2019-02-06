@@ -26,10 +26,11 @@ public class Main extends Application {
     static MediaPlayer mediaPlayerSFX;
     private static HashMap<String, Media> sounds = new HashMap<>();
     private static ArrayList<Double> usage = new ArrayList<>();
-    private final String[] SOUND_LIST = {
+    private final static String[] SOUND_LIST = {
         "bgm_credits.mp3", "bgm_game.mp3", "bgm_game_1.mp3", "bgm_game_2.mp3", "bgm_game_3.mp3", "bgm_how_to.mp3",
         "bgm_menu.mp3", "bgm_victory.mp3", "sfx_button_clicked.wav", "sfx_card_unfold.wav", "sfx_toggle.wav"
     };
+    private static final String[] SUFFICES = {"", "_1", "_2", "_3"};
 
     // testing shows only one instance is created
     //
@@ -45,16 +46,14 @@ public class Main extends Application {
     }
 
     static void playBGM(String key) {
-        mediaPlayerBGM.stop();
-        mediaPlayerBGM.dispose();
-        if (key.equals("bgm_game")) {
-            String[] suffix = {"", "_1", "_2", "_3"};
-            mediaPlayerBGM = new MediaPlayer(
-                sounds.get(key + suffix[random.nextInt(suffix.length)])
-            );
-        } else {
-            mediaPlayerBGM = new MediaPlayer(sounds.get(key));
+        if(mediaPlayerBGM != null){
+            mediaPlayerBGM.stop();
+            mediaPlayerBGM.dispose();
         }
+        if (key.equals("bgm_game")) {
+            key += SUFFICES[random.nextInt(SUFFICES.length)];
+        }
+        mediaPlayerBGM = new MediaPlayer(sounds.get(key));
         mediaPlayerBGM.setStartTime(Duration.ZERO);
         mediaPlayerBGM.setCycleCount(MediaPlayer.INDEFINITE);
         if (isMuted) {
@@ -77,22 +76,13 @@ public class Main extends Application {
         mediaPlayerSFX.play();  //play even if muted else unmute is noop
     }
 
+    // Mandatory override - called by framework (after calling optional override: init)
+    //
     @Override
     public void start(Stage primaryStage) throws Exception {
         isMuted = false;
-        for (String soundName : SOUND_LIST) {
-            URL resource = getClass().getResource("/" + soundName);
-            String key = soundName.substring(0, soundName.lastIndexOf('.'));
-            if( !sounds.containsKey(key)){
-                System.out.printf("Adding sound %s -> %s\n", soundName, resource);
-                sounds.put(key, new Media(resource.toString()));
-            }else{
-                System.out.printf("Not adding sound %s (already added)\n", soundName);
-            }
-        }
-        mediaPlayerBGM = new MediaPlayer(sounds.get("bgm_menu"));
-        mediaPlayerBGM.setCycleCount(MediaPlayer.INDEFINITE);
-        mediaPlayerBGM.play();
+        loadSounds();
+        playBGM("bgm_menu");
         window = primaryStage;
         Parent rootMenu = FXMLLoader.load(getClass().getResource("menu.fxml"));
         // long running operation runs on different thread
@@ -126,5 +116,18 @@ public class Main extends Application {
         window.setScene(new Scene(rootMenu, 600, 600));
         window.setResizable(false);
         window.show();
+    }
+
+    private void loadSounds() {
+        for (String soundName : SOUND_LIST) {
+            URL resource = getClass().getResource("/" + soundName);
+            String key = soundName.substring(0, soundName.lastIndexOf('.'));
+            if( !sounds.containsKey(key)){
+                System.out.printf("Adding sound %s -> %s\n", soundName, resource);
+                sounds.put(key, new Media(resource.toString()));
+            }else{
+                System.out.printf("Not adding sound %s (already added)\n", soundName);
+            }
+        }
     }
 }
