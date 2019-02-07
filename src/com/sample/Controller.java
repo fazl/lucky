@@ -74,7 +74,7 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {  //the correct override..
         animating = false;
-        switch( Game.activeScene){
+        switch( Game.activeWindow){
             case GAME:
                 score.textProperty().bind(Game.scoreProperty);
                 time.textProperty().bind(Game.timeProperty);
@@ -88,7 +88,7 @@ public class Controller implements Initializable {
         try {
             Main.playSFX("sfx_button_clicked");
             Game.resetGame();
-            Game.activeScene = ActiveScene.GAME;
+            Game.activeWindow = ActiveWindow.GAME;
             Main.window.hide();
             Main.window.setScene(getScene("game"));
             Main.window.setTitle("The Main Pick");
@@ -104,7 +104,7 @@ public class Controller implements Initializable {
         try {
             Main.playSFX("sfx_button_clicked");
             Main.playBGM("bgm_menu");
-            Game.activeScene = ActiveScene.MENU;
+            Game.activeWindow = ActiveWindow.MENU;
             if (Main.window.getTitle().equals("The Main Pick")) {
                 Main.window.hide();
                 Game.setGameIsOver();
@@ -215,7 +215,7 @@ public class Controller implements Initializable {
         try {
             Main.window.hide();
             Main.playBGM("bgm_victory");
-            Game.activeScene = ActiveScene.VICTORY;
+            Game.activeWindow = ActiveWindow.VICTORY;
             Main.window.setScene(getScene("victory"));
             Main.window.setTitle("Victory");
             Main.window.setMaximized(false);

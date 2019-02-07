@@ -5,10 +5,10 @@ import javafx.beans.property.StringProperty;
 
 import java.util.Arrays;
 
-enum ActiveScene { MENU, GAME, VICTORY }
+enum ActiveWindow { MENU, GAME, VICTORY }
 
 public class Game {
-    static ActiveScene activeScene = ActiveScene.MENU;  //starts correct
+    static ActiveWindow activeWindow = ActiveWindow.MENU;  //starts correct
     static StringProperty scoreProperty;
     static StringProperty timeProperty;
     static StringProperty triesProperty;
@@ -44,7 +44,7 @@ public class Game {
         System.out.printf("%s object #%d created\n", this.getClass().getSimpleName(), id);
     }
 
-    static boolean firstClickHappened() {
+    private static boolean firstClickHappened() {
         return firstClick;
     }
 
@@ -52,11 +52,11 @@ public class Game {
         gameIsOver = true;
     }
 
-    static boolean getGameIsOver() {
+    private static boolean getGameIsOver() {
         return gameIsOver;
     }
 
-    static int getScore() {
+    private static int getScore() {
         return score;
     }
 

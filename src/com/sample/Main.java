@@ -14,7 +14,7 @@ import java.net.URL;
 import java.util.*;
 
 public class Main extends Application {
-    private static int instances = 0;
+    private static int numInstances = 0;
     private final int id;
     static Random random = new Random(); //used elsewhere
     static boolean isMuted;
@@ -51,7 +51,7 @@ public class Main extends Application {
     // testing shows only one instance is created
     //
     public Main(){
-        id = ++instances;
+        id = ++numInstances;
         System.out.printf("%s object #%d created\n", this.getClass().getSimpleName(), id);
     }
 
@@ -99,7 +99,7 @@ public class Main extends Application {
         isMuted = false;
         loadSounds();
         playBGM("bgm_menu");
-        Game.activeScene = ActiveScene.MENU;
+        Game.activeWindow = ActiveWindow.MENU;
         Parent rootMenu = FXMLLoader.load(getClass().getResource("menu.fxml"));
         window.hide();
         window.setScene(new Scene(rootMenu, 600, 600));
